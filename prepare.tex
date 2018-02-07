@@ -1,0 +1,349 @@
+\documentclass{mcmthesis}
+\mcmsetup{CTeX = false,   % 使用 CTeX 套装时，设置为 true
+        tcn = 74911, problem = D,
+        sheet = true, titleinsheet = true, keywordsinsheet = true,
+        titlepage = true, abstract = true}
+\usepackage{palatino}
+\usepackage{lipsum}
+\usepackage{indentfirst}
+\title{Analysis and Optimization to the Process of Airport Security Check}%小标题
+\author{\small Team \#74911}
+\date{\today}
+\begin{document}
+\begin{abstract}
+\par Security check is essential to the safety of airline passengers. However, it is also a time
+consuming process. Passengers have to wait in lines, get ID check, prepare the belongings and get screening inspection and sometimes it even takes hours of time to finish.
+Besides, the variance of the waiting time in the checkpoints line is also very high, which
+is difficult for passengers to decide when to reach the airport. Therefore, we are required
+to figure out the potential issues and make some modifications to the current process
+that can reduce the average waiting time and its variance.
+\par We develop the \textbf{basic model} to simulate the current situation of American airports'
+security check and study the properties of Pre-Check policy. Though more `Pre-Check'
+passengers can help alleviate congestion to some degree, the time in the process of wait
+for screening is the overwhelming majority of the time spent in security check. It occupy
+over 98\% of total time during rush hours. In addition, we also plot the distribution of
+different total waiting time, and find that it is nearly a uniform distribution over several
+hours. The variance is hence too high for passengers to predict their total waiting time.
+\par Based on this conclusion, we mainly build two efficient modification models to optimize the current situation. The first one is \textbf{`multi-passenger linkage model of belongings preparation (MPL)'}. It shows that if the airport opens up a small zone for several
+passengers to prepare for screening at the same time, the average time and variance will
+obviously decrease. The other one is \textbf{`priority-based queuing model (PBQ)'}. It suggests
+airports to set some appropriate time interval limits to provide passengers who is to take
+off with great convenience without increasing the average time. Besides, it can encourage people not to arrive at airports so early that aggravate congestion.
+\par We also speculate about the TSA's latest institution for the elderly and children, but
+it does not make much contribution. At last, we consider the Chinese cultural norms
+and apply our model to Chinese airports. We construct the \textbf{cut-in-line} model. The result
+shows that MPL and PBQ models can still keep their high effectiveness. In other word,
+our models have high stability, high error-tolerant rate and extensive applicability.
+\begin{keywords}
+Security Check; Poission Distribution; Gaussian Distribution; Queuing Methods
+\end{keywords}
+\end{abstract}
+\maketitle
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Restatement of the Problem}
+\subsection{Background}
+\subsubsection{An Overview of the Problem}
+\par In recent years, as the threat of terrorism is upgrading, American society has attached
+great significance to the security of the airport. A key part of the security measures at
+the airport is security checkpoints, where the passengers and their belongings should be
+inspected for dangerous objects. However, if the passengers takes a long time to pass the
+security checkpoints, there will be a negative impact on the customers' feelings, then the
+interests of the airlines can be influenced.
+\par There are two major problems in Chicago's O'Hare international airport and other
+American airports. First, it is annoying that there are sometimes over-long queues at
+the airports, but we cannot give an explanation or a prediction. Second, the variance of
+waiting time is high, that is to say, it is difficult for the travelers to find a suitable time
+to reach the airport without being unnecessarily early or missing the plane. Therefore it
+makes great sense to solve the congestion problem.
+
+\subsubsection{The Process of Security Check}
+The process of security check can be decomposed into following processes:
+\begin{itemize}
+\item \textbf{Arriving process}:Passengers are assigned at the beginning of our model.
+\item \textbf{Process of waiting at the checkpoints}: Passengers wait at the checkpoints in Zone
+A and then move to the subsequent queue in Zone B.
+\item \textbf{ID check process}: Passengers get the identification check in this process.
+\item \textbf{Process of waiting for screening}: Passengers wait in lanes for screening.
+\item \textbf{Preparing process}: After reaching the front of the line, passengers place their belongings, including their jackets, liquid containers, computers and so on.
+\item \textbf{Screening process}: Passengers get screened by the millimeter scanner while the
+goods are scanned by the X-ray, then they retrieve their belongings.
+\item \textbf{Additional inspection process}: If the passengers fail in the screening process, they
+should get additional inspections in Zone D.
+\end{itemize}
+
+\subsection{literature review}
+To simplify the problem and facilitate the implementation of computer language,
+researchers treat time as a discrete variable in the analysis of a single-server queuing
+system at first[1]. After that, some people have applied Queuing Theory to the dynamic
+allocation of airport security resources, which used pure Markov chain, discontinuous
+Markov process, Poisson process, statistical properties of transition probability equation
+and the birth and death process[2] [3]. What's more, some other people try to achieve a goal of virtual queuing instead of real one in order to get a smoother distribution of arriving passengers[4]. We expect to find some convenient and intuitive modifications for
+the airport security based on the previous wisdom and some necessary math knowledge
+like Queuing Theory, Probability and Statistics[5].
+
+
+\subsection{The Task at Hand}
+\begin{itemize}
+\item Construct a mathematical model to simulate the situation of the current security
+checkpoints and find an explanation for the phenomenon of congestion.
+\item Propose some modifications to improve the current process.
+\item Take the various behaviors of travelers into consideration, then discuss the influence of those factors on the model.
+\item On the basis of the model, give some policy and procedural suggestions to ameliorate the situation of the security checkpoints.
+\end{itemize}
+%\emph{center of percussion} [Brody 1986], 
+
+%\begin{Theorem} \label{thm:latex}
+%\LaTeX
+%\end{Theorem}
+%\begin{Lemma} \label{thm:tex}
+%\TeX .
+%\end{Lemma}
+%\begin{proof}
+%The proof of theorem.
+%\end{proof}
+
+
+
+
+
+
+\section{Model Assumptions and Notations}
+\subsection{Assumptions and Justifications}
+In order to simplify the course of modeling and draw some reasonable conclusions
+from our model, we make assumptions as follows:
+
+\begin{itemize}
+\item The excel data can embody the overall level of the airport to some degree. We use
+the differential method to calculate out the mean value and the standard deviation
+of the time consumed in different processes.
+\item  The intervals of the passengers' arrivals obey Poisson distribution. Because the
+time when a passenger arrives is unrelated to that of the last passenger, therefore
+we assume that the intervals of the passengers' arrivals obey Poisson distribution.
+The mean values of the distribution are obtained from the excel data.
+\item The time of ID check and millimeter wave scanning obeys Gaussian distribution.
+In this two processes, we suppose that the staff of the airport are skillful, that is
+to say the time cost in these processes fluctuates around a mean value. Thus we
+assume that they obey Gaussian distribution. The mean values and the standard
+deviations are also calculated out according to the excel data.
+\item  The time interval of two examinations is 11s to pass the X-ray scanning and the
+time interval between two placements is 2s. According to the excel data, we can see
+that the interval is sometimes around 2s and sometimes around 11s. We interpret
+it as: in one time of examination, the inspector inspects several pieces of luggage.
+There are time intervals between each examinations.
+\item All of the passengers know the rules of the airport. They will go to the back of the
+shortest queue after arrival.
+\item There are no emergency incidents happened in the airport. What we discuss is the
+airport in order and it is clear that any emergency incident can break the order of
+any airport.
+\item Pre-Check passengers can choose to go through the regular passage of security
+check when the Pre-Check passage is crowded. As for Pre-Check passengers, it
+takes them the same time either in Pre-Check passages or in regular passages.
+\item The time of preparing the belongings is 15 $\pm$ 5 + 5X s in the Pre-Check passage,
+while it is 45 $\pm$ 10+ 5X s in the ordinary passage. This is based on our experiments.
+X is the number of the pieces of luggage.
+\item In our model, there are 4 ID checkpoints in Zone A and 4 checking lanes in Zone B.
+\item We do not take the transiting time between different stations into consideration.
+
+\end{itemize}
+
+
+
+\subsection{Notations}
+\par Here we list the symbols and notations used in this paper, as shown in Table 1. Some
+of them will be defined later in the following sections.
+
+
+\begin{table}
+\begin{center}
+\caption{Notations}
+\begin{tabular}{cl}
+\toprule
+Symbol & Description \\%表格标题
+\midrule
+$t_\alpha$ & the time interval between two passengers' arrivals\\
+$t_p$ & the time interval between two Pre-Check passengers' arrivals \\
+$t_r$ & the time interval between two regular passengers' arrivals\\
+$t_{waitA}$ & the time of waiting at Zone A\\
+$t_{waitB}$ & the time of waiting at Zone B\\
+$t_{check}$ & the time of identification check\\
+$\sigma _{check}$ & the standard deviation of $t_{check}$\\
+$t_{xray}$ & the time of X-ray scanning \\
+$t_{milli}$ & the time of millimeter wave scanning\\
+$t_{pre}$ & the time of preparing\\
+$\sigma _{pre}$ &the time of preparing \\
+$t_{screening}$ & the standard deviation of $t_{type}$\\
+$T$ &the total time of the security check of a single person \\
+$T_{avg}$ & the total time of the security check process of a group of people\\
+$\sigma_{T}$ & the standard deviation of $T_{avg}$\\
+$T_{r}$ & the total time consumed by regular passengers\\
+$T_{p}$ & the total time consumed by PreCheck passengers\\
+$\sigma_{Tr}$ & the standard deviation of $T_{r}$\\
+$\sigma_{Tp}$& the standard deviation of $T_{p}$\\
+$N_{prepare}$ &the standard deviation of $T_{r}$ \\
+$R_{passenger}$ & the number of passengers preparing their belongings\\
+$R_{lane}$ & the ratio of $t_{p}$ to $t_{r}$ \\
+$R_{oyp}$ & the ratio of Pre-Check lanes to regular lanes \\
+$R_{cut}$ & the percentage of people over 70 or under 12\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\section{The Basic Model of Security Checkpoints}
+\par In this section, we develop the basic model to explain the current situation of American airports. The basic model simulates the processes mentioned in Section 1.1.2. Then
+we discover that the process of waiting for screening is the most time consuming. The
+Pre-Check policy of TSA is effective, but we need to find more strategies to solve the
+problem.
+\subsection{The Design of the Model}
+\par In order to demonstrate our basic model clearly, we divide it into the four following
+sub models.
+\begin{itemize}
+\item Inflow model: This model is designed to simulate the random arrivals of the passengers.
+\item Sub model two: Attributes generating model: In this model, we attribute different
+properties to the passengers that will influence the time length of security check.
+\item Queuing model: This model studies the process of waiting in lines.
+\item Screening model: The preparing process and the screening process are discussed
+in this model.
+\end{itemize}
+\subsection{Sub Models}
+\subsubsection{Inflow Model}
+\par The inflow model simulates the stochastic arrivals of passengers at the entrance of
+the airport. According to the excel data, we can obtain that the average time interval of
+passengers' arrivals. We can assume that the arrival of each passenger obeys Poisson
+distribution in Equation \eqref{aa}. $ \lambda $ is the average time interval between the arrivals of two
+passengers according to the excel data, and N is the number of seconds between the
+arrivals of two passengers in our stochastic process.
+\begin{equation}
+P(t = N) = {e^{ - \lambda }}\frac{{{\lambda ^N}}}{{N!}} \label{aa}
+\end{equation}
+
+\subsubsection{Attributes Generation Model}
+After a passenger is assigned in the program, we give some relevant attributes to
+the passengers, including the time for ID check, the time for millimeter wave scanning,
+the pieces of luggage they carry, the time for preparing the personal belongings and
+whether the passenger has enrolled in 'Pre-Check'. We assume that the first two factors
+obey Gaussian distribution in Equation (2). Then we calculate the mean value and the
+standard deviation of the first three affecting factors. Those of the fourth one are given
+in the assumptions.
+
+\begin{figure}[h]
+\small
+\centering
+\includegraphics[width=12cm]{mcmthesis-aaa.eps}
+\caption{aa} \label{fig:aa}
+\end{figure}
+
+%\lipsum[8] \eqref{ab}
+%\begin{equation}
+%a^2 \label{ab}
+%\end{equation}
+
+\[
+  \begin{pmatrix}{*{20}c}
+  {a_{11} } & {a_{12} } & {a_{13} }  \\
+  {a_{21} } & {a_{22} } & {a_{23} }  \\
+  {a_{31} } & {a_{32} } & {a_{33} }  \\
+  \end{pmatrix}
+  = \frac{{Opposite}}{{Hypotenuse}}\cos ^{ - 1} \theta \arcsin \theta
+\]
+\lipsum[9]
+
+\[
+  p_{j}=\begin{cases} 0,&\text{if $j$ is odd}\\
+  r!\,(-1)^{j/2},&\text{if $j$ is even}
+  \end{cases}
+\]
+
+\lipsum[10]
+
+\[
+  \arcsin \theta  =
+  \mathop{{\int\!\!\!\!\!\int\!\!\!\!\!\int}\mkern-31.2mu
+  \bigodot}\limits_\varphi
+  {\mathop {\lim }\limits_{x \to \infty } \frac{{n!}}{{r!\left( {n - r}
+  \right)!}}} \eqno (1)
+\]
+
+\section{Calculating and Simplifying the Model  }
+\lipsum[11]
+
+\section{The Model Results}
+\lipsum[6]
+
+\section{Validating the Model}
+\lipsum[9]
+
+\section{Conclusions}
+\subsection{Strength and Weakness of Our Model}
+\subsection{Future Application of Models}
+
+\begin{itemize}
+\item \textbf{Applies widely}\\
+This  system can be used for many types of airplanes, and it also
+solves the interference during  the procedure of the boarding
+airplane,as described above we can get to the  optimization
+boarding time.We also know that all the service is automate.
+\item \textbf{Improve the quality of the airport service}\\
+Balancing the cost of the cost and the benefit, it will bring in
+more convenient  for airport and passengers.It also saves many
+human resources for the airline. \item \textbf{}
+\end{itemize}
+
+\begin{itemize}
+\item \textbf{Applies widely}\\
+This  system can be used for many types of airplanes, and it also
+solves the interference during  the procedure of the boarding
+airplane,as described above we can get to the  optimization
+boarding time.We also know that all the service is automate.
+\item \textbf{Improve the quality of the airport service}\\
+Balancing the cost of the cost and the benefit, it will bring in
+more convenient  for airport and passengers.It also saves many
+human resources for the airline. \item \textbf{}
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{1} D.~E. KNUTH   The \TeX{}book  the American
+Mathematical Society and Addison-Wesley
+Publishing Company , 1984-1986.
+\bibitem{2}Lamport, Leslie,  \LaTeX{}: `` A Document Preparation System '',
+Addison-Wesley Publishing Company, 1986.
+\bibitem{3}\url{http://www.latexstudio.net/}
+\bibitem{4}\url{http://www.chinatex.org/}
+\end{thebibliography}
+
+\begin{appendices}
+
+\section{First appendix}
+
+\lipsum[13]
+
+Here are simulation programmes we used in our model as follow.\\
+
+\textbf{\textcolor[rgb]{0.98,0.00,0.00}{Input matlab source:}}
+\lstinputlisting[language=Matlab]{./code/mcmthesis-matlab1.m}
+
+\section{Second appendix}
+
+some more text \textcolor[rgb]{0.98,0.00,0.00}{\textbf{Input C++ source:}}
+\lstinputlisting[language=C++]{./code/mcmthesis-sudoku.cpp}
+
+\end{appendices}
+\end{document}
+
+%% 
+%% This work consists of these files mcmthesis.dtx,
+%%                                   figures/ and
+%%                                   code/,
+%% and the derived files             mcmthesis.cls,
+%%                                   mcmthesis-demo.tex,
+%%                                   README,
+%%                                   LICENSE,
+%%                                   mcmthesis.pdf and
+%%                                   mcmthesis-demo.pdf.
+%%
+%% End of file `mcmthesis-demo.tex'.
