@@ -1,0 +1,801 @@
+\documentclass{mcmthesis}
+\mcmsetup{CTeX = false,   % 使用 CTeX 套装时，设置为 true
+        tcn = 74911, problem = E,
+        sheet = true, titleinsheet = true, keywordsinsheet = true,
+        titlepage = false, abstract = false}
+\usepackage{palatino}
+\usepackage{lipsum}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\title{Indirect Climate Impact Model \\Based on RBF Neural Network}%小标题
+\author{\small Team \#74911}
+\date{\today}
+\begin{document}
+\begin{abstract}
+\par In this paper, we study the relationship between climate change and country's fragility by establishing a mathematical model based on the methods of cluster analysis, analytic hierarchy process and RBF neural network. 
+\par Firstly, we define a \textbf{climate value} to describe the climate of a region. By using the method of \textbf{cluster analysis}, all of the countries are classified into five categories: fragile, brittle, impoverished, moderately functional and highly functional. Then climate values are computed by the method of \textbf{analytic hierarchy process}, in which two representative countries of each category are selected to be the scheme level, while temperature, drought index and precipitation are taken to be the criterion level. For example, values of the climate index for the ten representative countries in 2007 are: 1.8, 1.4, 1.1, 0.9, 0.8, 0.7, 0.7, 0.7, 0.8, 0.9.
+\par Secondly, the relationships between the climate change and country's fragility are established based on the RBF neural network. After \textbf{analyzing the correlations} between the climate  values and the twelve indicators in the fragile state index, we find that GG, ED, RD and EI are the most closely related indicators with climate change. Then the relational function between these closely indexes and climate change is constructed by the \textbf{RBF neural network}, in which these closed indexes are used for the input layer and the climate index is the output layer. Next, according to the indicators of the past years, we use \textbf{time series} to predict the index values, and put these results into the trained RBF neural network to push back the change of the climate value.
+\par At last, we study instability of some countries and draw some conclusions. Applying the proposed mathematical model, we see that the climate change indirectly increases the fragility of Somalia, and give some improvement advices on the indicators GG, ED, RD and EI. Moreover, Liberia will be transferred from a brittle country into a fragile country based on 10 times of stationary time series prediction, in 8 years later(in 2025), its FSI will reach 102.7, broke the tipping point 101.7, which shows that GG, ED, RD and EI are also decisive indexes. Based on the references [8], we present four interventions to prevent countries from becoming a fragile state. Then we explained the impact of these interventions. Finally, we choose South America to test the sensitivity of our model, which verify that the model is feasible. Meanwhile clarified the improvement direction of our model.
+\end{abstract}
+
+\maketitle
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction}%问题重述
+\subsection{Background}
+\par In recent years, the changes of global climate have many different impacts on different regions. For the purpose of this problem, we refer '`state'` as a sovereign state or a country.
+\par If a state government can not or choose not to provide the citizens' basic needs, it would be defined as fragile. And a fragile state will make the citizens less resistant to natural disasters.
+\begin{itemize}
+\item	Climate change can result in huge net damage costs. Many of these effects may change human lifestyles and may lead to the weakening and collapse of social and governmental structures. As a result, unstable governments could result in fragile states.(The Intergovernmental Panel on Climate Change)
+\item	Common unsustainable environmental practices, migration and resource shortages in developing countries may further aggravate states with weak governance.\\(Schwartz and Randall, 2003; Theisen, Gleditsch and Buhaug, 2013)
+\item 	Environmental pressure alone does not necessarily trigger violent conflict, but there is evidence that violent conflicts can arise as it is combined with weak governance and social divisions. This confluence could lead to a spiral of violence, typically along latent ethnic and political divisions.(Krakowka,Heimel, and Galgano 2012)
+\end{itemize}
+\par There are two major problems in Chicago's O'Hare international airport and other
+American airports. First, it is annoying that there are sometimes over-long queues at
+the airports, but we cannot give an explanation or a prediction. Second, the variance of
+waiting time is high, that is to say, it is difficult for the travelers to find a suitable time
+to reach the airport without being unnecessarily early or missing the plane. Therefore it
+makes great sense to solve the congestion problem.
+
+
+\subsection{The Task at Hand}
+\begin{itemize}
+\item Construct a mathematical model to identify the condition of a statue, and find out the influencing factors of climate .
+\item Use our mathematical model to explain the impact of climate to the fragility of a country.
+\item 	Use our mathematical model to see when and how climate change may push a state to become more fragile. Identify any definitive indicators. Explain the tipping point and predict when a country may reach it .
+\item Test our model in a smaller or bigger country and if it does not work well, then make some improvements.
+\end{itemize}
+
+
+\subsection{Literature review}
+To simplify the problem and facilitate the implementation of computer language,
+researchers treat time as a discrete variable in the analysis of a single-server queuing
+system at first[1]. After that, some people have applied Queuing Theory to the dynamic
+allocation of airport security resources, which used pure Markov chain, discontinuous
+Markov process, Poisson process, statistical properties of transition probability equation
+and the birth and death process[2] [3]. What's more, some other people try to achieve a goal of virtual queuing instead of real one in order to get a smoother distribution of arriving passengers[4]. We expect to find some convenient and intuitive modifications for
+the airport security based on the previous wisdom and some necessary math knowledge
+like Queuing Theory, Probability and Statistics[5].
+\par By literature reference, we clearly understand the concept of national fragility. According to multiple index systems for assessing national fragility [1], we established the evaluation of national fragility model. As the global climate will continue to be warming in this century [2], it becomes imperative for us to research and intervene the impact of climate change. In this study, a series of methods are developed to analyze the climate impact to a country's instability. We defined climatic value as an indicator first. Then, we adopt the method of cluster analysis in order to find out the similarity between the countries being studied. According to the fragile state index given by the Peace Fund, we divided them into five categories: fragile, brittle, impoverished, moderately functional and highly functional[3]. After that, we selected two representative countries in each category for the needs of  making a convincing study of the impact of climate change. We gain the temperature and precipitation data over the years in these countries through the climate research center of University of East Anglia[4]. Besides,according to a formula proposed by de Martonne[5], we figure out years of drought index in these country. In the method of  analytic hierarchy process, we take temperature, drought index and precipitation as the criterion level, ten countries which were selected before as the scheme level, and the countries with the largest climate value as the target level .We take combined weight in the target level as the climate value of the countries. Then take climatic values over the years in these countries and the twelve indicators of the previous years in the fragile state index to make a correlation analysis[6]. Then we use the RBF neural network to construct the mapping relation between these indexes and climate values. These indexes are used as the input layer, and the climate values are used as the output layer. But considering the fact that climate change impacts on these indexes, the relationship can be understood as an inverse function between index value and climatic value. Next, according to the indicators of the past years, we use time series to predict the index values ,and put these results into the RBF neural network which was trained before, so as to push back the change of the climate value .
+\par At this point, we can quantitatively explain that the change of climate directly affects the change of several index values, and the change of these indicators will directly lead to the change of fragile state index, that is to say, climate change indirectly affects the fragility of the country [7]. On the basis of other references, we gain the human intervention measures to prevent a country become fragile[8] .
+
+
+
+
+
+
+
+\section{Model Assumptions and Notations}%模型假设和符号说明
+\subsection{Assumptions}
+In order to simplify the course of modeling and draw some reasonable conclusions
+from our model, we make assumptions as follows:
+
+\begin{itemize}
+\item 	Since 2007, the impact of climate change on the global environment has not gone beyond the scope of the global environment.
+\item  Environmental self-regulation in every country has been basically unchanged since 2007 .
+\item Southern Sudan and Southern Sudan, which were split from  Sudan in 2011, are still regarded as Sudan .
+\item 	Among the three indexes constructed by analytic hierarchy process, the relative importance is drought index, precipitation, and temperature .
+\item 	The evaluation of three indexes of each country's drought index, precipitation and temperature are all objective and impartial .
+
+\end{itemize}
+
+
+
+\subsection{Notations}
+\par Here we list the symbols and notations used in this paper, as shown in Table 1. Some
+of them will be defined later in the following sections.
+
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Notations}
+\begin{tabular}{cl}
+\toprule
+Symbol & Description \\%表格标题
+\midrule
+$W_0$ & The weight vector of the criterion level to the target level\\
+$W_1$ &The weight vector of the scheme level to the criterion level\\
+$Lamda$ &Maximum eigenvalue\\
+$CI$ &Concordance index\\
+$cr_0$ &Second layer combination consistency ratio\\
+$cr_1$ &Third layer consistency ratio\\
+$ts$ & Combination weight\\
+$cr$ & Third layer combination consistency ratio \\
+$CR$ & The ratio of the third layer to the first layer conformance\\
+$CV$ & Climate value\\
+$B_k$ &Decision matrix \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+\section {Data Pre-processing}
+We can easily find that compared with 2006, there are 31 countries added to the table by downloading and analyzing the index table of fragile states from 2006 to 2017 of the world's countries given by the Peace Foundation [6] . So we decided to take 2007 as the time of the starting point of this study , in order to study the existing countries in the world accurately .
+
+\section {Division of national level}
+In order to find out the commonness among the countries studied, we adopt the cluster analysis method to divided these countries into three, four and five categories ,by the average of each year's fragile state index given by the Peace Foundation . Part of the classification results are shown in the following Table 2.
+\begin{center}
+\begin{table}[htbp]
+\caption{Statistical tables for one of the classification methods}
+\begin{tabular}{c|ccccccc}   %表示创建一个八列的表格环境，其中第一列水平居中，用|线划开，其余列中中左中右中中
+\hline
+Country &Fragile State Index & Cluster-3 & Cluster-4 & Cluster-5 \\%表格标题
+\hline
+Somalia &113.58 &1	 &1	 &1 \\
+Sudan &110.8 &1	 &1	 &1 \\
+Central African Republic &110.5		&1	 &1	 &1 \\
+Congo Democratic Republic&109.4	&1	 &1		 &1 \\
+Chad  &108.4 	&1		 &1	 &1 \\
+Afghanistan &107.26		&1	 &1	 &1 \\
+Yemen	&106.1 &1	 &1		 &1 \\
+Iraq &104.5 &1		 &1	 &1 \\
+Haiti &104.1		&1	 &1	 &1 \\
+Guinea	&102.9	&1	 &1	 &1 \\
+Nigeria		&102.5 &1		&1	 &1 \\
+Pakistan	&101.7 	&1	 &1	 &1 \\
+Zimbabwe	&100.8	&1  &1	 &2 \\
+Ethiopia &97.9		&1	&1	 &2 \\
+Uganda	&96.8	&1		&2	 &2 \\
+Myanmar		&95.1	&1 &2	 &2 \\
+North Korea &94.7	&1	&2	&2 \\
+Burundi		&94.2	&1	&2	 &2 \\
+Bangladesh	 &93.6	&1	&2	 &2 \\
+Timor-Leste	&92.4	&1	&2	 &2 \\
+
+\hline
+\end{tabular}
+\end{table}
+\end{center}
+
+After analyzed the results of three classifications, it is found that the classification results of these countries are close to the reality when they are divided into five categories. According to the classification of the national level according to the references[3] , we finally decided to divide them into five categories, fragile, brittle, impoverished, moderately functional and highly functional .Then we can determined the classification of national levels , and the results are showed in Table 3 .
+
+\begin{table}[htbp]
+\begin{center}
+\caption{National hierarchy}
+\begin{tabular}{|c|c|}   %表示创建一个八列的表格环境，其中第一列水平居中，用|线划开，其余列中中左中右中中
+\hline
+Cluster &   Fragile State Index   \\%表格标题
+\hline
+Fragile(F) & 101.7 $\leq$ FSI $\leq$ 120\\
+\hline
+Brittle(B) &  70.4 $\leq$ FSI $<$ 101.7\\
+\hline
+Impoverished(I)	&53.3 $\leq$ FSI $<$ 70.4 \\
+\hline
+Moderately Functional(M)	& 39.2 $\leq$ FSI $<$ 53.3 \\
+\hline
+Highly Functional(H)& 0 $\leq$ FSI $<$ 39.2 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\section{The describing of climate value}
+According to the the classification of countries, we select two representative countries in each category. The country's names and their categories are shown in the Table 4.
+
+\begin{table}[htbp]
+\begin{center}
+\caption{List of country's names and categories}
+\begin{tabular}{|c|c|c|}   %表示创建一个八列的表格环境，其中第一列水平居中，用|线划开，其余列中中左中右中中
+\hline
+Cluster & \multicolumn{2}{c|}{  Country }  \\%表格标题
+\hline
+F &Haiti&Somalia \\
+\hline
+B &Zambia&Iran\\
+\hline
+I	& Brazil&Cuba\\
+\hline
+M	&Poland&Italy\\
+\hline
+H&Germany&Australia\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+According to the world bank database[4], we find out the temperature and precipitation of these ten countries from 2006 to 2014, and calculate their annual average value respectively. The annual average temperature of the ten countries from 2006 to 2014 are showed in Figure \ref{figure1}. The annual average annual precipitation of ten countries from 2007 to 2014 are showed in Figure \ref{figure2}.
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{4cm}
+\centering
+\includegraphics[width=4cm,height=4cm]{figures/temperature.png}
+\caption{Temperature}
+\label{figure1}
+\end{minipage}
+\begin{minipage}{4cm}
+\centering
+\includegraphics[width=4cm,height=4cm]{figures/rainfall.png}
+\caption{Rainfall}
+\label{figure2}
+\end{minipage}
+\end{figure}
+
+Then according to the drought index calculating formulas proposed by de Martonne 
+\[{{\rm{I}}_{dm}} = \frac{P}{{T + 10}}\]
+\par Where $I_{dm}$ is deMartonne drought index, P is average precipitation (mm), T is average temperature (degree celcius) .
+We gain the drought index of ten countries from 2006 to 2014 ,the results are showed 
+in Figure 3.
+
+\begin{figure}[htbp]
+\centering
+\label{figure3}
+\includegraphics[width=5cm]{figures/DE.png}
+\caption{Statistics of drought indexfrom 2006 to 2014}
+\end{figure}
+
+
+\subsection{Analytic hierarchy process for gaining climate value}
+\subsubsection{Data standardization}
+The standardization of data is scale the data in proportion, and put it into a small specific interval, so that we can remove the unit limitation of these three indicators to dryness, precipitation, temperature, and transformed it into pure numerical dimensionless. After that we can construct the comparison matrix, so normalize the original data is necessary.
+\subsubsection{Hierarchical structure model}
+We take temperature, drought index and precipitation as the criterion level, ten countries which were selected before as the scheme level, and the countries with the largest climate value as the target level ,Constructing a hierarchical structure model.
+\begin{figure}[htbp]
+\centering
+\label{figure3}
+\includegraphics[width=5cm]{figures/cengcifenxi.png}
+\caption{Hierarchical structure model of ten Countries}
+\end{figure}
+
+\subsection{Structural judgment matrix}
+To compare the impact of a certain layer of N factors, $X_1$, $X_2$,... $X_n$ on the last layer, we can be take any $X_i$ and $X_j$ among it ,in order to compare their contribution (or importance) to the last layer. Assign $X_i$/$X_j$ according to the following 1-9 scales:
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison scale}
+\begin{tabular}{c|c}  
+\hline
+$X_i$/$X_j$ & meaning \\%表格标题
+\hline
+1 & he effects of $X_i$ and $X_j$ are the same \\
+\hline
+3 &  $X_i$ have slightly stronger effects than $X_j$\\
+\hline
+5	& $X_i$ have stronger effects than $X_j$\\
+\hline
+7 & $X_i$ have obviously stronger effects than $X_j$\\
+\hline
+9 & $X_i$ have absolutely stronger effects than $X_j$\\
+\hline
+2,4,6,8 & The effects ratio of $X_i$ to $X_j$ is between the two adjacent levels above\\
+\hline
+1,1/2...1/9 & The effects ratio of $X_i$ to $X_j$ is the reciprocal number of the above $X_i$/$X_j$
+\\
+\hline
+\end{tabular}
+\end{table}
+
+~\\
+
+According to the indexes above,  the comparison matrix of three indexes for drought index, precipitation and temperature is constructed below:
+\begin{equation}
+A={
+\left[ \begin{array}{ccc}
+1 &3 &7\\
+   1/3 &1& 5\\
+   1/7 &1/5 &1\\
+
+\end{array} 
+\right ]}
+\end{equation}
+
+\subsubsection{Computation of weight vector and consistency check}
+Based on MATLAB we gained the maximum eigenvalue :
+\[Lamda = 3.0649\]
+
+\quad According to the random consistency index RI:
+
+\begin{table}[htbp]
+\centering
+\caption{Random consistency index RI}
+\begin{tabular}{c|ccccccccccc}
+\hline
+$n$ & 1 & 2 & 3 & 4& 5& 6 & 7 & 8&9&10&11\\
+\hline
+$RI$  & 0 & 0 & 0.58 &0.90 &1.12 &1.24 &1.32 & 1.41 &1.45 &1.49 &1.51\\
+\hline
+\end{tabular}
+\end{table}
+
+When n is 3,  RI is 0.58, so based on the formula
+\[CI = (Lamda - n)/(n - 1)\]
+\quad We can know that CI=0.0392\\
+
+\quad By doing this we find that CR=CI/RI=0.0567<1. Therefore, the degree of inconsistency of A is within the allowable range, and the eigenvector of A (normalized) could be used as a weight vector .
+With the help of MATLAB, the weight vector is obtained below:
+
+\begin{equation}
+W0={
+\left[ \begin{array}{c}
+0.6491\\
+0.2789\\
+0.0719\\
+
+\end{array} 
+\right ]}
+\end{equation}
+
+\subsubsection{Calculation of combination weight vector and consistency check}
+As we have gain the weight vector of the criterion level to the target level before, so by using the same methods,  based on the annual mean value of temperature, precipitation and dryness of the ten countries from 2007 to 2014, we constructed a comparison matrix for scheme layer to each criterions of the criterion layer : 
+\begin{equation}
+B1={
+\left[ \begin{array}{cccccccccc} 
+1 & 2 & 3 & 3 &4 &4 &5 &5 &6 &6 \\
+1/2 & 1 & 2 & 3 & 3 & 4 & 4 & 5 & 5 &6 \\
+1/3 & 1/2 & 1 &2 &3 &3 &4 &4 &5 &5 \\
+1/3 & 1/3 & 1/2 & 1 & 2 & 3 & 3 & 4 &4 &5\\
+1/4& 1/3& 1/3& 1/2 & 1 &2 &3 &3 &4 &4\\
+1/4& 1/4& 1/3& 1/3& 1/2 & 1 &2 &3 &3 &4\\
+1/5& 1/4& 1/4& 1/3& 1/3& 1/2 & 1 &2 &3 &3\\
+1/5& 1/5& 1/4& 1/4& 1/3& 1/3& 1/2 & 1 &2 &3 \\
+1/6& 1/5& 1/5& 1/4& 1/4& 1/3& 1/3 &1/2 &1 &2\\
+1/6& 1/6& 1/5& 1/5& 1/4& 1/4& 1/3& 1/3& 1/2& 1
+\end{array} 
+\right ]}
+\end{equation}
+
+\begin{equation}
+B2={
+\left[ \begin{array}{cccccccccc} 
+1& 1/2& 1/2& 1/3& 1/3& 1/4& 1/5& 1/3& 1/6& 1/7\\
+2& 1& 1/2& 1/2& 1/3& 1/3& 1/4& 1/5& 1/3& 1/6\\
+2 & 2 & 1 &1/2 &1/2 &1/3 &1/3 &1/4 &1/5 &1/3\\
+3& 2& 2& 1& 1/2& 1/2& 1/3& 1/3& 1/4& 1/5\\
+3& 3& 2& 2& 1& 1/2& 1/2& 1/3& 1/3& 1/4\\
+4 &3 &3 &2 &2 &1 &1/2 &1/2 &1/3 &1/3\\
+5 &4 &3 &3 &2 &2 &1 &1/2 &1/2 &1/3\\
+3 &5 &4 &3 &3 &2 &2 &1 &1/2 &1/2\\
+6 &3 &5 &4 &3 &3 &2 &2 &1 &1/2\\
+7 &6 &3 &5 &4 &3 &3 &2 &2 &1\\
+
+
+
+
+\end{array} 
+\right ]}
+\end{equation}
+
+\begin{equation}
+B3={
+\left[ \begin{array}{cccccccccc} 
+1& 1& 1/2& 1/2& 1/2& 1/4& 1/4& 1/5& 1/6& 1/6\\
+1 &1 &1 &1/2 &1/2 &1/2 &1/4 &1/4 &1/5 &1/6\\
+2& 1& 1& 1/2& 1/2& 1/2& 1/4& 1/4 &1/5 &1/6\\
+2& 2& 1& 1& 1/2& 1/2& 1/2& 1/4& 1/4& 1/5\\
+2& 2& 2& 1& 1& 1/2& 1/2& 1/2& 1/4& 1/4\\
+4& 2& 2& 2& 1& 1& 1/2 &1/2& 1/2& 1/4\\
+4& 4& 2& 2& 2& 1& 1& 1/2& 1/2& 1/2\\
+5& 4& 4& 2& 2& 2& 1& 1& 1/2& 1/2\\
+6& 5& 4& 4& 2& 2& 2& 1& 1& 1/2\\
+6& 6& 5& 4& 4& 2& 2& 2& 1& 1\\
+
+\end{array} 
+\right ]}
+\end{equation}
+
+By using the same method, we gain the weight vector $W_0$, the maximum characteristic root $Lamda$ , and the consistency index $CR$ of $B_k$; which were showed in Table 7.\\
+
+\begin{table}[htbp]
+\centering
+\caption{Test value table}
+\begin{tabular}{|c|c|}   %表示创建一个八列的表格环境，其中第一列水平居中，用|线划开，其余列中中左中右中中
+\hline
+\textbf{$W_0$} & 0.65  0.28  0.7\\
+\hline
+\multirow{3}*{$W_1$}& 0.26 	0.2	0.15	0.11	0.08	0.06	0.05	0.04	0.03	0.02\\
+& 0.02	 0.03	0.04	0.05	0.07	0.09	0.12	0.15	0.19	0.24\\
+& 0.03	0.04	0.04	0.05	0.07	0.09	0.12	0.15	0.19	0.23\\
+\hline
+\textbf{$Lamda$} & 10.73	10.53	  9.40\\
+\hline
+\textbf{$CR$} & 0.06	0.04	 0.05\\
+\hline
+\textbf{$Combine Weight$}&0.18 0.14 0.12 0.09 0.08 0.07  0.07 0.07 0.08 0.10\\
+\hline
+\end{tabular}
+\end{table}
+
+When $n$=10, $RI$=1.49, and because $CR$=$I$/$RI$,  the conformance ratio of $B_k$ is \\
+0.0810, 0.0584,0.0663, which all small than 0.1, so all of them can be validated by SPSS.\\
+With the help of MATLAB, we gain the ten countries' combined weights in the target level which showed in Tab 8.
+
+\begin{table}[htbp]
+\centering
+\caption{Combined weights}
+\begin{tabular}{c|c}   %表格标题
+\hline
+  Cluster & Climate Value \\
+\hline
+SOM &0.18 \\
+HTI & 0.14\\
+ZMB &0.11 \\ 
+IRN &0.09\\
+CUB & 0.08\\ 
+BRA &0.07\\
+ITA &0.07\\ 
+POL &0.07\\ 
+DEU &0.08\\
+AUS& 0.09\\
+
+\hline
+\end{tabular}
+\end{table}
+
+
+Then we carried out the combination consistency test in order to determine whether the combination weight vector can be used as the final decision basis . According to the calculation formula.
+
+\[CR = \sum\limits_{p = 2}^s {c{r_1}} \]
+
+The ratio of the combination of scheme level to the target level is 0.1086,  It can be considered that the comparison judgment of the whole level passes the consistency test .
+To sum up, after expanded the combination weight vector by 10 times, we gain the climate value of the ten countries in 2007, which is showed in Table 9.
+
+\begin{table}[htbp]
+\centering
+\caption{Climate value in 2007}
+\begin{tabular}{c|c}   %表格标题
+\hline
+  Cluster & Climate Value in 2007 \\
+\hline
+SOM &1.8 \\
+HTI & 1.4\\
+ZMB &1.1 \\ 
+IRN &0.9\\
+CUB & 0.8\\ 
+BRA &0.7\\
+ITA &0.7\\ 
+POL &0.7\\ 
+DEU &0.8\\
+AUS& 0.9\\
+\hline
+\end{tabular}
+\end{table}
+
+By using this method, we can finally gained eight sets of combined weights of ten countries in the target layer, and given as the climate values of the year 2007 - 2014 of these countries.
+
+\section{Correlation analysis}
+With the help of SPSS, we can use the climate value and 12 indicators of the index from 2007 to 2014 in the fragile state index to make a correlation analysis. Taking Somalia as an example, part the results are showed below.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{5cm}
+\centering
+\includegraphics[width=5cm,height=5cm]{figures/14.jpg}
+\label{figure5}
+\end{minipage}
+\begin{minipage}{5cm}
+\centering
+\includegraphics[width=5cm,height=5cm]{figures/15.jpg}
+\label{figure6}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{5cm}
+\centering
+\includegraphics[width=5cm,height=5cm]{figures/16.jpg}
+\label{figure5}
+\end{minipage}
+\begin{minipage}{5cm}
+\centering
+\includegraphics[width=5cm,height=5cm]{figures/17.jpg}
+\label{figure6}
+\end{minipage}
+\caption{Relationship diagram}
+\end{figure}
+
+We can clearly known from the results that the indexes closely related to climate change are GG, ED, RD and EI.
+
+\section{Climate indirect impact model based on RBF neural network}
+\subsection{RBF neural network}
+The RBF artificial neural network is composed of an input layer, an implicit layer and an output layer. The hidden layer function of RBF neural network has many forms, and the commonly used function is Gauss's function. We set the input of the input layer as :
+\[X = [{x_{1,}}{x_2}...,{x_n}]\]
+Actual output is:
+\[Y = [{y_{1,}}{y_2}...,{y_n}]\]
+Input layer could achieve nonlinear mapping of \[X \to {R_i}(X)\]. Output layer could achieve linear mapping of 
+\[{R_i}(X) \to {y_k}\] 
+ The output layer of the K neuron network output is
+\[{y_k} = \sum\limits_{i = 1}^m {{w_{ik}}{R_i}} (X),k = 1,...,p\]
+Where $n$ is numbers of input layer nodes, $m$ is hidden layer node number, $p$ is output layer node number,  $w_{ik}$ is the connection weight of the i neuron of the hidden layer and the $k$ neuron of the output layer, ${R_i}(X)$ is the function of the neuron in the hidden layer.
+\[{R_i}(X) = \exp ( - ||X - {C_i}|{|^{{{^{2/2{\sigma _i}}}^2}}}),i = 1,...,m\]
+Where $X$ is n dimension input vector, $C_i$ is the center of the base function and the have same dimension vectors with $X$. $\sigma_i$ is the width of the base function, m is the number of the perceptive units (the number of the hidden layer nodes), ${||X - {C_i}||}$ is the scope of the vector  .
+
+For a given input, only a small portion of the input is activated near the center $X$. When the cluster center $C_i$, weight and weight value of the RBF network are determined, the output value of the network can be obtained when a given input is given.
+
+\subsection{Indirect impact model}
+Taking Somalia as an example, the indicators RD, GG, ED, and EI, which are closely related to climate change, are used as input layers. The data from 2007 to 2013 are shown in the Tab 10.
+
+\begin{table}[htbp]
+\centering
+\caption{The index of Somalia}
+\begin{tabular}{c|cccc}   %表格标题
+\hline
+  & GG & ED & RD  & EI  \\
+\hline
+2007 & 8.5	&9.2	&9	&10 \\
+2008 & 9.5	&9.4	&9.8	&10 \\
+2009 & 9.7	&9.5	&9.9	&9.8 \\
+2010 & 9.7	&9.6	&10	&9.6\\
+2011 & 9.5	&9.3	&10	&9.7\\
+2012 & 9.6	&9.7	&10	&9.8\\
+2013 &9.3	&9.4	&10	&9.4 \\
+\hline
+\end{tabular}
+\end{table}
+
+The climate value of Somalia is used as an output layer, and its data from 2007 to 2013 are shown in the Tab 11.
+
+\begin{table}[htbp]
+\centering
+\caption{The climate value of Somalia}
+\begin{tabular}{c|ccccccc}   %表格标题
+\hline
+ & 2007	&2008	&2009	&2010	&2011	&2012	&2013 \\
+\hline
+climate value &1.8	&2.5	&3	&3	&2.7	&2.8	&2.1\\
+\hline
+\end{tabular}
+\end{table}
+
+Then use the RBF neural network function mapping relation between the construction of input and output,  but considering the actual situation for the impact of climate change on these indicators,  the practical significance of the function mapping relation constructed by the RBF neural network is the inverse function between the index value and the climate value .
+
+\subsection{Test of our model}
+We take GG, ED, RD and EI, which are closely related to the climate change in Somalia in 2014, as input layers, and the data are shown in Tab 12.
+
+\begin{table}[htbp]
+\centering
+\caption{The climate value of Somalia}
+\begin{tabular}{c|ccccccc}   %表格标题
+\hline
+ & GG & ED & RD  & EI\\
+\hline
+2014 &10 &	8.8&	10&	9.9\\
+\hline
+\end{tabular}
+\end{table}
+
+It can be seen from the table that the error is only 5.4\%, so the establishment of the RBF neural network model is basically reasonable.
+
+
+\begin{table}[htbp]
+\centering
+\caption{The climate value of Somalia}
+
+\begin{tabular}{|c|c|c|}   %表格标题
+\hline
+truth value & predicted value  &relative error\\
+\hline
+2.3&2.4254	&5.45\%\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Time series prediction and stationary Daniel test}
+By doing correlation analysis, we find that four indicators : GG, ED, RD, EI,  are closely related to climate change in Somalia .
+We adopt time series to make a prediction of these indexes respectively .
+
+With the help of MATLAB, we gain the relative error between predicted value  the actual value . Take the index GG as an example and get the results shown in the Table 14.
+
+\begin{table}[htbp]
+\centering
+\caption{Predicted values and relative errors of known data}
+\begin{tabular}{c|c|c|c|c|c|c}   %表格标题
+\hline
+  & 2007	&2008	&2009	&2010	&2011	&2012\\
+\hline
+truth value & 8.5	&9.5	&9.7	&9.7&	9.5	&9.6\\
+
+\hline
+predicted value &8.5&	9.5&	9.7	&9.725&	9.725&	9.6\\
+
+\hline
+relative error&0&0&0&0.0026&0.0237&0\\
+\hline
+
+\hline
+\hline
+  & 2013	&2014	&2015	&2016	&2017	\\
+\hline
+truth value & 9.3	&10	&9.5&	9.4&	8.9\\
+
+\hline
+predicted value &9.525&	9.4625& 	9.6125&	 9.8375& 	9.3875\\
+
+\hline
+relative error&0.0242&0.538&0.012&0.047&0.055\\
+\hline
+\hline
+\end{tabular}
+\end{table}
+
+From the table, we can see that the prediction accuracy of our model is high. On this basis, we predicted the values of the 2018 indexes, which is shown in the Tab 15:
+
+\begin{table}[htbp]
+\centering
+\caption{The forecast value of four indicators in 2018}
+\begin{tabular}{c|ccccccc}   %表格标题
+\hline
+ & GG & ED & RD  & EI \\
+\hline
+2018 &9.138 &8.981 &	9.978&	9.434\\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Model Application}
+\subsection{The fragility of the Somali state}
+\subsubsection{The indirect effects of climate change}
+We put four indicators : GG, ED, RD, EI, which are closely related to climate change of Somalia in 2015-2017,  and its predicted value into RBF neural network trained before, gain the climate values in 2015-2018 of this country, and showed in Table 16.
+\begin{table}[htbp]
+\centering
+\caption{Climate forecast for Somalia}
+\begin{tabular}{c|ccccccc}   %表格标题
+\hline
+ &2015	&2016	&2017 &2018\\
+\hline
+climate value 	&2.6	&2.4&	2.5&2.7\\
+\hline
+\end{tabular}
+\end{table}
+
+We put four indicators of GG, ED, RD, EI, and the cumulative sum of Somalia from 2017 to 2018, and the statistics of climate values into Tab 17.
+\begin{table}[htbp]
+\centering
+\caption{Somali indicators and climate statistics}
+\begin{tabular}{c|ccccccc}   %表格标题
+\hline
+ & GG & ED & RD  & EI &SUM & CV \\
+\hline
+2017 &8.9&	8.9&	10&	9.3&37.1&	2.5\\
+2018 &9.138&	8.981&	9.978&	9.434&37.531&2.7\\
+
+\hline
+\end{tabular}
+\end{table}
+
+According to the table, we can see that the fragile state index in Somalia is nearly to the maximum of 120 in 2017 .
+
+the whole sum of the results, as has been close to 120 out of a fragile state index in Somalia in 2017, so the increase of climate change on the national fragility index received limitations, but we can still find the fluctuations of climate change directly affects the change of the indexes of GG, ED, RD, EI numerical. 
+
+ The increase of these index values directly led to the fragile state index increased in Somalia, namely, increased the Somali national fragility. So we can draw the conclusion: \textbf{changes of climate have indirectly affected the national fragility of Somalia} .
+
+\subsubsection{Measures to reduce the fragility of Somalia}
+In order to reduce the national fragility of the Somalia and reduce the impact of climate change o, we need start from specific indicators for GG, ED, RD and EI, which are closely related to climate change.
+
+\begin{itemize}
+\item	For the index of GG, we should put forward a series of reform plans, redefine the distribution of interests among different groups, and strive to mitigate the contradictions among different interest groups, and urge everyone to seek common ground while reserving differences, and work together for a happy life
+\item  	For the index of ED, we should ask for suggestions from experienced economists, stabilize the economy, make national efforts to develop economy and improve people's living standard.
+\item	For the index of RD, we should increase the assistance to domestic tramps, stabilize the situation in the country and reduce the probability of becoming an international refugee of its own people.
+\item 	For the index of EI, we need to develop their economy, and let it strive to become self reliant, minimize dependence on foreign aid. Only with self-reliance, could have ample food and clothing to unremitting self-improvement.
+\end{itemize}
+
+\subsection{Discussion on the fragility of the Liberia state}
+\subsubsection{Countries outside the top ten}
+In addition to selecting ten fragile state of Liberia as the object of study of this problem, according to the Peace Fund given over the fragile state index, calculate the FSI of Liberia average of 97, according to a task for the division of national level, we can draw the conclusion: Liberia is a fragile state.
+\subsubsection{Prediction and explanation of national fragility changes}
+According to the conclusions drawn from the first task, climate change directly affects the four indicators of GG, ED, RD and EI. The change of these indicators will directly lead to the change of fragile state index, which means climate indirectly affects the national vulnerability of Liberia.
+By constructing the time series of Liberia FSI data from 2007 to 2017, we get the relative error between the known data and the actual value, and showed in Tab 18.
+
+\begin{table}[htbp]
+\centering
+\caption{Predicted values and relative errors of known data}
+\begin{tabular}{c|c|c|c|c|c|c}   %表格标题
+\hline
+& 2007	&2008	&2009	&2010	&2011	&2012	\\
+\hline 
+truth value &92.9	&91	&91.8	&91.7	&94.4	&93.3\\
+
+\hline
+predicted value &92.9 &	91	&89.1	&89.9	&89.8	&92.5\\
+
+\hline
+relative error &  0 & 0 &0.029&0.020&0.049&0.013\\
+\hline
+
+\hline
+\hline
+  & 2013	&2014	&2015	&2016	&2017	\\
+\hline
+truth value &95.1	&94.3	&97.3	&95.5	&93.8\\
+
+\hline
+predicted value &91.4	&93.2	&92.4	&95.4	&93.6\\
+
+\hline
+relative error&0.045& 	0.012 &	0.05  &	0.001  &	0.002\\
+\hline
+\hline
+\end{tabular}
+\end{table}
+
+From the table, we can see that the prediction accuracy is high, therefore, we forecast the FSI of Liberia .After 10 times of stationary time series prediction,we found in 8 years later, namely 2025, its FSI value will reach 102.7, then Liberia will enter the ranks of vulnerable countries, and become more fragile.
+
+\subsubsection{Determines the decisive factor}
+According to the correlation analysis of the task one, it is found that the decisive factors that affect the country's fragility indirectly are four indicators, that is GG, ED, RD, EI.
+\subsubsection{Tipping point and fragility prediction}
+According to the division in task 1, the tipping point of Liberia from fragile countries into the critical point of the fragile state is defined as the FSI value is greater than or equal to 101.7. With the time series of the Liberia FSI value constructed before,  after 10 times of stationary time series prediction, in 8 years later(2015),  the FSI value will be up to 102.7, thus it entered the ranks of fragile countries.
+
+\subsection{Measures to prevent from becoming a fragile state}
+We still choose Liberia as a research object, from the predicted result of our  model, the country in 8 years will enter the ranks of fragile countries. Before this, if we add some measures to reduce the impact of climate change, there is a very definite possibility for us to avoid the occurrence of this bad situation. Specific intervention measures[8] are:
+\begin{enumerate}
+\item Vigorously develop the model of climate system;
+\item The establishment of climate observation system;
+\item The establishment of a national meteorological disaster warning and emergency system;
+\item The establishment of a national climate change impact assessment and response system.
+\end{enumerate}
+
+\subsection{Influence and cost of the measures}
+For measures 1,  it will provide a high level of scientific support for the economic and social development of Liberia, and the sustainable development of national security and environmental diplomacy.
+\par For measures 2,  we can get long series and high-precision observation data, which can meet the needs of Liberia's climate prediction and climate change research, and safeguard national security.
+\par For measures 3,  by building a multi-sectoral Early Warning Defense coordination system and establishing a major weather and climate disaster emergency entity, we can enhance the rapid mobility and emergency response capacity in all parts of Liberia.
+\par  For measures 4,  it can provide a comprehensive and accurate scientific basis for environmental diplomatic negotiations, and provide valuable suggestions for Liberia Central Committee to formulate countermeasures for climate change.
+\par The prediction of the cost of these measures, in view of the differences in region, policy, currency, etc., can not be accurately estimated at present.
+
+\section{Strengths and Weaknesses}
+\subsection{Strengths}
+In this study we applies the analytic hierarchy process (AHP) to combine the weight of the ten countries in the target layer as the climate value of the country, and depicts the concept of climate value under the unified measure. After quantifying the climate value, we can make quantitative analysis of the impact of climate change on the national fragility, and make the results more convincing .
+\par This thesis establishes the mapping relationship between evaluation index and climate value using RBF neural network, these indicators will be used as the input layer, the output layer as climate values, and considering the actual situation for the impact of climate change on the index, the mapping function of RBF neural network to construct cleverly defined as the index value and the inverse function the climate value and build a solid bridge between evaluation index and climate values for the solid foundation.
+\par In this study we use the RBF neural network to construct the mapping relation between these indexes and climate values. These indexes are used as the input layer, and the climate values are used as the output layer .But considering the fact that climate change impacts on these indexes, the relationship can be understood as an inverse function between index value and climate value . We build a strong bridge between the evaluation index and the climate value, ramming the foundation for the whole paper.
+
+\subsection{Weaknesses}
+This model can not predict the cost of artificial interventions.
+
+
+
+\begin{thebibliography}{99}
+\bibitem{1}The concept of fragile : Liu Tianxu, \& Wu Tao. (2016). The problem of evaluation standard of vulnerable countries. The science of Leadership Forum (13), 17-26
+\bibitem{2}Qin Dahe, Ding Yihui, Su Jilan, et al. Assessment of climate and environment evolution in China (I): climate and environment change and future trend in China [J]. resources, environment and development, 2007, 1 (3): 4-09.
+\bibitem{3}Tikuisis, P. \& Carment, D., (2017). Categorization of States Beyond Strong and Weak. Stability: International Journal of Security and Development. 6(1), p.12. DOI: http://doi.org/10.5334/sta.483
+\bibitem{4}\url{https://crudata.uea.ac.uk/cru/data/hrg/cru_ts_3.23/cruts.1506241137.v3.23/}
+\bibitem{5}Calculation formula for drought index Raoul B. Emm. de Martonne. Les Alpes. Geographie generale.[J]. Revue De Géographie Alpine, 1927, 15:166-168.
+\bibitem{6}Fragile States Index data from 2006-2017.http://fundforpeace.org/fsi/data/
+\bibitem{7}Si Shoukui, sun Xijing. Mathematical modeling algorithm and application of [M]. National Defence Industry Press, 2011.
+\bibitem{8}Supporting literature on human intervention measures: Zhang Haidong, Luo Yong, Wang Bangzhong, Dong Wenjie and Wang Zhiqiang (2006). The impact of meteorological disasters and climate change on national security. Progress in climate change research, 2 (2), 85-88.
+\bibitem{9}\url{https://www.wmo.int/cpdb/data/membersandterritories}
+\bibitem{10}Liu Tianxu. (2012). The rise of research on fragile states: current situation, reasons and limitations. Foreign Social Sciences (6), 68-75
+\bibitem{11}Krakowka, A. R., Heimel, N., \& Galgano, F. A. (2012). Modeling environmental security in sub-saharan africa. Geographical Bulletin, 53(1), 21-38.
+\end{thebibliography}
+
+\newpage
+
+\begin{appendices}
+
+\section{First appendix}
+
+Here are simulation programmes we used in our model as follow.\\
+
+\textbf{\textcolor[rgb]{0.98,0.00,0.00}{RBF neural network code:}}
+\lstinputlisting[language=Matlab]{./code/rbf.m}
+
+\section{Second appendix}
+
+\textcolor[rgb]{0.98,0.00,0.00}{\textbf{Time series code:}}
+\lstinputlisting[language=Matlab]{./code/ta.m}
+
+\newpage
+\section{Third appendix}
+
+\textcolor[rgb]{0.98,0.00,0.00}{\textbf{Analytic hierarchy process code:}}
+\lstinputlisting[language=Matlab]{./code/ly.m}
+
+\end{appendices}
+\end{document}
+
+%% 
+%% This work consists of these files mcmthesis.dtx,
+%%                                   figures/ and
+%%                                   code/,
+%% and the derived files             mcmthesis.cls,
+%%                                   mcmthesis-demo.tex,
+%%                                   README,
+%%                                   LICENSE,
+%%                                   mcmthesis.pdf and
+%%                                   mcmthesis-demo.pdf.
+%%
+%% End of file `mcmthesis-demo.tex'.
